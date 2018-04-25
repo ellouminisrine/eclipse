@@ -6,7 +6,7 @@ import java.nio.ByteBuffer;
 import java.nio.LongBuffer;
 import java.security.MessageDigest;
 import java.util.UUID;
-import java.security.*;
+
 
 
 public class RandomUUID extends UDF { 
