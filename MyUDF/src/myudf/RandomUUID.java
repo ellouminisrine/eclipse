@@ -1,18 +1,37 @@
 package myudf;
-import org.apache.commons.codec.digest.DigestUtils;
+
 import org.apache.hadoop.hive.ql.exec.UDF;
-//import org.apache.commons.codec.*;
+
+import java.nio.ByteBuffer;
+import java.nio.LongBuffer;
+import java.security.MessageDigest;
 import java.util.UUID;
-//import org.apache.commons.codec.binary.Hex;
+import java.security.*;
+
 
 public class RandomUUID extends UDF { 
 	
-	public UUID evaluate(String input) {
+	public String evaluate(String id) {
 	        
-             String md5 = DigestUtils.md5Hex(input);
-             String fromatUuid =  md5.replaceFirst( "([0-9a-fA-F]{8})([0-9a-fA-F]{4})([0-9a-fA-F]{4})([0-9a-fA-F]{4})([0-9a-fA-F]+)", "$1-$2-$3-$4-$5" );
-             java.util.UUID myUuid = java.util.UUID.fromString( fromatUuid );
-             return myUuid ;
-			}
+		
+		 try {
+			  
+			   byte[] bytesOfMessage = id.getBytes("UTF-16LE");
 
-		}
+		        MessageDigest md = MessageDigest.getInstance("MD5");
+		        		
+		        byte[] md5 = md.digest(bytesOfMessage);
+		           
+		        ByteBuffer bb = ByteBuffer.wrap(md5);
+		        LongBuffer ig = bb.asLongBuffer();
+		      
+		        return ( new UUID(ig.get(0), ig.get(1)).toString().toUpperCase());
+		        
+			  } catch (Exception e) {
+				  return("");
+			   
+			}}}
+		
+            
+
+		
